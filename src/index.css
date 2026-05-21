@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 7%;
+    --foreground: 40 45% 92%;
+    --card: 223 38% 10%;
+    --card-foreground: 40 45% 92%;
+    --popover: 223 38% 10%;
+    --popover-foreground: 40 45% 92%;
+    --primary: 39 97% 64%;
+    --primary-foreground: 224 47% 8%;
+    --secondary: 220 24% 18%;
+    --secondary-foreground: 40 45% 92%;
+    --muted: 220 18% 22%;
+    --muted-foreground: 40 14% 67%;
+    --accent: 174 70% 52%;
+    --accent-foreground: 224 47% 8%;
+    --border: 220 22% 22%;
+    --input: 220 22% 22%;
+    --ring: 39 97% 64%;
+    --radius: 1.25rem;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at top left, rgba(249, 168, 37, 0.18), transparent 30%),
+      radial-gradient(circle at top right, rgba(45, 212, 191, 0.14), transparent 28%),
+      linear-gradient(180deg, #091018 0%, #070b12 45%, #05070c 100%);
+    color: hsl(var(--foreground));
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+@layer components {
+  .noise-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.34'/%3E%3C/svg%3E");
+  }
+
+  .marquee {
+    --marquee-duration: 22s;
+    position: relative;
+    width: 100%;
+  }
+
+  .marquee__track {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    will-change: transform;
+    animation: marquee-left var(--marquee-duration) linear infinite;
+  }
+
+  .marquee__item img { display: block; }
+
+  @keyframes marquee-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+}
