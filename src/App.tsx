@@ -295,15 +295,9 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // Hide the initial loading screen when the window load event fires
-    const onLoad = () => setInitialLoading(false);
-    window.addEventListener('load', onLoad);
-    // Fallback: hide after 1.2s even if load doesn't fire
-    const t = setTimeout(() => setInitialLoading(false), 1200);
-    return () => {
-      window.removeEventListener('load', onLoad);
-      clearTimeout(t);
-    };
+    // Keep the initial loading screen visible for at least 5 seconds.
+    const t = setTimeout(() => setInitialLoading(false), 3000);
+    return () => clearTimeout(t);
   }, []);
 
   if (initialLoading) {
