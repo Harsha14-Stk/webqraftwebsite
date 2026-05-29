@@ -177,7 +177,9 @@ function ParallaxBlock({ imgUrl, subheading, heading, title, body, chips }: Para
             ))}
           </div>
           <button
-            className="inline-flex w-full items-center gap-2 rounded-md bg-gradient-to-r from-primary/70 to-purple-600/60 px-6 py-3 text-xl text-white transform-gpu transition duration-200 ease-out hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary/60 md:w-fit"
+            type="button"
+            onClick={() => window.location.assign('/services')}
+            className="group inline-flex w-full items-center gap-2 rounded-full bg-gradient-to-r from-primary/70 to-purple-600/60 px-6 py-3 text-xl text-white transform-gpu transition duration-200 ease-out hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary/60 md:w-fit"
             aria-label="Learn more"
           >
             <span className="inline">Learn more</span>
