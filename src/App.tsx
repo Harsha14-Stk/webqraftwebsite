@@ -17,7 +17,9 @@ import ConnectWithUsDemo from './components/ui/connect-with-us-demo';
 import { PrismaHero } from './components/ui/prisma-hero';
 import AboutPage from 'pages/AboutPage';
 import ContactPage from 'pages/ContactPage';
-import ServicesPage from 'pages/ServicesPage';
+import ServicesPage from './pages/ServicesPage';
+import LoadingPage from 'pages/LoadingPage';
+// ProcessTimelineDemo removed (undo integration)
 
 const services = [
   {
@@ -101,25 +103,6 @@ const principles = [
   }
 ];
 
-const technologies = [
-  'React',
-  'TypeScript',
-  'Tailwind CSS',
-  'Next.js',
-  'Node.js',
-  'Firebase',
-  'PostgreSQL',
-  'Figma',
-  'Dolibarr ERP',
-  'CRM Automation',
-  'REST APIs',
-  'Cloud Integration',
-  'Mobile-First Web',
-  'E-Commerce Platforms',
-  'SEO',
-  'Analytics'
-];
-
 const clientsLogos = [
   'https://webqraft.in/wp-content/uploads/2025/05/1-1-300x300.png',
   'https://webqraft.in/wp-content/uploads/2025/05/2-1-300x300.png',
@@ -129,9 +112,19 @@ const clientsLogos = [
   'https://webqraft.in/wp-content/uploads/2025/05/7-1-300x300.png'
 ];
 
+const partnerLogos = [
+  'https://webqraft.in/wp-content/uploads/2025/05/1-300x300.png',
+  'https://webqraft.in/wp-content/uploads/2025/05/5-300x300.png',
+  'https://webqraft.in/wp-content/uploads/2025/05/2-300x300.png',
+  'https://webqraft.in/wp-content/uploads/2025/05/7-300x300.png',
+  'https://webqraft.in/wp-content/uploads/2025/05/8-300x300.png',
+  'https://webqraft.in/wp-content/uploads/2025/05/4-300x300.png',
+  'https://fitsmallbusiness.com/wp-content/uploads/2021/08/FeatureImage_Odoo-.jpg'
+];
+
 function HomePage() {
   return (
-    <main className="overflow-hidden text-[hsl(var(--foreground))]">
+    <main id="main" className="overflow-hidden text-[hsl(var(--foreground))]">
       <PrismaHero />
 
       <section id="services" className="relative mx-auto max-w-7xl scroll-mt-24 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
@@ -155,9 +148,12 @@ function HomePage() {
                 key={service.title}
                 initial={{ y: 24, opacity: 0 }}
                 whileInView={{ y: 0, opacity: 1 }}
+                whileHover={{ scale: 1.04, y: -6 }}
+                whileTap={{ scale: 0.98 }}
                 viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, delay: index * 0.08 }}
-                className="group flex h-full flex-col rounded-[1.75rem] border border-white/10 bg-white/5 p-6 shadow-glow backdrop-blur-xl"
+                transition={{ type: 'spring', stiffness: 300, damping: 24, delay: index * 0.08 }}
+                tabIndex={0}
+                className="group flex h-full flex-col rounded-[1.75rem] border border-white/10 bg-white/5 p-6 shadow-glow backdrop-blur-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
               >
                 <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-[#08101a] transition-transform duration-300 group-hover:-translate-y-1">
                   <Icon className="h-5 w-5" />
@@ -171,13 +167,7 @@ function HomePage() {
 
                 <p className="mt-3 text-sm leading-6 text-white/72">{service.description}</p>
 
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {service.tags.map((tag) => (
-                    <span key={tag} className="rounded-full border border-white/15 bg-black/25 px-3 py-1 text-[11px] text-white/78">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
+                {/* tags removed per request */}
               </motion.article>
             );
           })}
@@ -246,15 +236,16 @@ function HomePage() {
             </p>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            {technologies.map((technology) => (
-              <span
-                key={technology}
-                className="rounded-full border border-white/10 bg-[#0a121d] px-4 py-2 text-sm text-white/80"
-              >
-                {technology}
-              </span>
-            ))}
+          <div className="mt-8 overflow-hidden">
+            <div className="marquee">
+              <div className="marquee__track flex items-center gap-8">
+                {partnerLogos.concat(partnerLogos).map((src, index) => (
+                  <div key={`${src}-${index}`} className="marquee__item flex-shrink-0 w-28 opacity-90 sm:w-32 md:w-36">
+                    <img src={src} alt={`partner-${index}`} className="h-full w-full rounded-xl object-contain" />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -295,12 +286,32 @@ function HomePage() {
 
 function App() {
   const [pathname, setPathname] = useState(window.location.pathname);
+  const [initialLoading, setInitialLoading] = useState(true);
 
   useEffect(() => {
     const handlePopState = () => setPathname(window.location.pathname);
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  useEffect(() => {
+    // Hide the initial loading screen when the window load event fires
+    const onLoad = () => setInitialLoading(false);
+    window.addEventListener('load', onLoad);
+    // Fallback: hide after 1.2s even if load doesn't fire
+    const t = setTimeout(() => setInitialLoading(false), 1200);
+    return () => {
+      window.removeEventListener('load', onLoad);
+      clearTimeout(t);
+    };
+  }, []);
+
+  if (initialLoading) {
+    return <LoadingPage />;
+  }
+  if (initialLoading) {
+    return <LoadingPage />;
+  }
 
   if (pathname === '/services') {
     return <ServicesPage />;
@@ -312,6 +323,10 @@ function App() {
 
   if (pathname === '/contact') {
     return <ContactPage />;
+  }
+
+  if (pathname === '/loading') {
+    return <LoadingPage />;
   }
 
   return <HomePage />;

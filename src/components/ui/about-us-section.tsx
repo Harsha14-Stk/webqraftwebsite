@@ -285,7 +285,22 @@ interface ServiceItemProps {
 
 function ServiceItem({ icon, secondaryIcon, title, description, variants, delay, direction }: ServiceItemProps) {
   return (
-    <motion.div className="group flex flex-col" variants={variants} transition={{ delay }} whileHover={{ y: -5, transition: { duration: 0.2 } }}>
+    <motion.div
+      className="group flex flex-col cursor-pointer"
+      variants={variants}
+      transition={{ delay }}
+      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+      role="button"
+      tabIndex={0}
+      onClick={() => {
+        window.location.href = '/services';
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          window.location.href = '/services';
+        }
+      }}
+    >
       <motion.div
         className="mb-3 flex items-center gap-3"
         initial={{ x: direction === 'left' ? -20 : 20, opacity: 0 }}
@@ -309,10 +324,26 @@ function ServiceItem({ icon, secondaryIcon, title, description, variants, delay,
         initial={{ opacity: 0 }}
         animate={{ opacity: 0 }}
       >
-        <span className="flex items-center gap-1">
-          Learn more <ArrowRight className="h-3 w-3" />
-        </span>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            window.location.href = '/services';
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              window.location.href = '/services';
+            }
+          }}
+          className="flex items-center gap-1 rounded-2xl bg-gradient-to-r from-primary/20 to-primary/10 px-3 py-2 transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary"
+          aria-label={`Learn more about ${title}`}
+        >
+          <span className="transition-transform duration-200 group-hover:scale-105">Learn more</span>
+          <ArrowRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-1" />
+        </button>
       </motion.div>
+      
     </motion.div>
   );
 }

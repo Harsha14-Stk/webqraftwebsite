@@ -87,7 +87,6 @@ const navItems: NavItem[] = [
   { label: 'Home', to: '/' },
   { label: 'Services', to: '/services' },
   { label: 'Why us', to: '/about' },
-  { label: 'Portfolio', id: 'portfolio' },
   { label: 'Contact', to: '/contact' }
 ];
 
@@ -114,17 +113,11 @@ const LogoMark = () => {
 };
 
 const PrismaHero = () => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   const navigateTo = (path: string) => {
     window.history.pushState({}, '', path);
     window.dispatchEvent(new PopStateEvent('popstate'));
-  };
-
-  const handleNavClick = (event: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (!element) return;
-
-    event.preventDefault();
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -135,6 +128,12 @@ const PrismaHero = () => {
           loop
           muted
           playsInline
+          // prevent picture-in-picture and remote playback so the video remains inside the page
+          disablePictureInPicture
+          controlsList="nodownload noremoteplayback"
+          // prevent native context menu and dragging which can lead to external playback
+          onContextMenu={(e) => e.preventDefault()}
+          draggable={false}
           className="absolute inset-0 h-full w-full object-cover"
           src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4"
         />
@@ -143,7 +142,10 @@ const PrismaHero = () => {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(249,168,37,0.18),transparent_25%),radial-gradient(circle_at_bottom_right,_rgba(45,212,191,0.22),transparent_28%),linear-gradient(180deg,rgba(5,9,16,0.18),rgba(5,9,16,0.72))]" />
         <div className="pointer-events-none absolute inset-0 bg-hero-grid bg-[length:64px_64px] opacity-[0.18]" />
 
-        <nav className="absolute right-3 top-3 z-30 sm:right-6 md:right-10">
+        
+
+        {/* Desktop nav (hidden on small screens) */}
+        <nav className="hidden md:block absolute right-3 top-3 z-30 sm:right-6 md:right-10">
           <div className="flex max-w-[calc(100vw-1.5rem)] flex-wrap items-center justify-end gap-2 rounded-[1.2rem] border border-white/15 bg-black/55 px-3 py-2 backdrop-blur-md sm:max-w-[calc(100vw-2rem)] sm:gap-4 sm:px-4 md:max-w-none md:flex-nowrap md:rounded-[1.4rem] md:px-6 lg:gap-6">
             {navItems.map((item) =>
               'to' in item ? (
@@ -162,7 +164,10 @@ const PrismaHero = () => {
                 <a
                   key={item.id}
                   href={`#${item.id}`}
-                  onClick={(event) => handleNavClick(event, item.id)}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    navigateTo('/services');
+                  }}
                   className="whitespace-nowrap rounded-lg px-1 py-1 text-[10px] text-white/70 transition-colors hover:text-[#E1E0CC] sm:text-xs md:text-sm"
                 >
                   {item.label}
@@ -171,6 +176,59 @@ const PrismaHero = () => {
             )}
           </div>
         </nav>
+
+        {/* Mobile hamburger (visible on small screens) */}
+        <div className="absolute right-3 top-3 z-40 md:hidden">
+          <button
+            aria-label="Toggle menu"
+            aria-expanded={mobileOpen}
+            onClick={() => setMobileOpen((s) => !s)}
+            className="inline-flex items-center justify-center rounded-md bg-white/5 p-2 text-white/80 hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+          >
+            <svg className="h-5 w-5 text-white/90" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+              <path d="M4 7h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M4 12h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Mobile menu panel */}
+        {mobileOpen && (
+          <div className="absolute right-3 top-14 z-40 w-[85vw] max-w-xs md:hidden">
+            <div className="rounded-lg border border-white/8 bg-black/65 p-3 backdrop-blur-md">
+              {navItems.map((item) =>
+                'to' in item ? (
+                  <a
+                    key={item.label}
+                    href={item.to}
+                    onClick={(event) => {
+                        event.preventDefault();
+                        setMobileOpen(false);
+                        navigateTo(item.to);
+                      }}
+                    className="block w-full rounded-md px-3 py-3 text-sm text-white/80 hover:bg-white/5"
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    onClick={(event) => {
+                      setMobileOpen(false);
+                      event.preventDefault();
+                      navigateTo('/services');
+                    }}
+                    className="block w-full rounded-md px-3 py-3 text-sm text-white/80 hover:bg-white/5"
+                  >
+                    {item.label}
+                  </a>
+                )
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="pointer-events-none absolute left-0 right-0 top-4 z-20 px-3 sm:px-6 md:px-10">
           <LogoMark />
@@ -204,14 +262,7 @@ const PrismaHero = () => {
             </div>
 
             <div className="col-span-12 flex flex-col gap-4 pb-5 lg:col-span-4 lg:pb-10">
-              <motion.p
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="max-w-md text-xs leading-5 text-white/76 sm:text-sm md:text-base"
-              >
-                WebQraft Solutions delivers ERP systems, CRM platforms, and web development services that streamline operations and support sustainable growth.
-              </motion.p>
+                {/* Intro paragraph removed as requested */}
 
               <motion.button
                 initial={{ y: 20, opacity: 0 }}

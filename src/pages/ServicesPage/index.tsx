@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import SiteHeader from 'components/ui/site-header';
+import FooterDemo from 'components/ui/demo';
 
 type ParallaxSectionProps = {
   imgUrl: string;
@@ -125,32 +126,35 @@ const SERVICES_FLOW: ParallaxSectionProps[] = [
 
 const ServicesPage = () => {
   return (
-    <main className="bg-[#05080d] text-white">
-      <SiteHeader title="Services" />
+    <>
+      <main className="bg-[#05080d] text-white">
+        <SiteHeader title="Services" />
 
-      {SERVICES_FLOW.map((section) => (
-        <ParallaxBlock key={section.heading} {...section} />
-      ))}
+        {SERVICES_FLOW.map((section) => (
+          <ParallaxBlock key={section.heading} {...section} />
+        ))}
 
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mb-6">
-          <p className="text-xs uppercase tracking-[0.35em] text-primary/80">All Services</p>
-          <h3 className="mt-2 text-2xl font-semibold text-[#E7E4D2] sm:text-3xl">Everything we offer</h3>
-        </div>
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {allServices.map((service) => (
-            <article key={service.title} className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.03] shadow-glow">
-              <img src={service.image} alt={service.title} className="h-52 w-full object-cover" />
-              <div className="p-6">
-                <p className="text-xs uppercase tracking-[0.35em] text-accent/80">{service.subtitle}</p>
-                <h4 className="mt-2 text-2xl font-semibold text-[#F2EEDC]">{service.title}</h4>
-                <p className="mt-3 text-sm leading-7 text-white/72">{service.description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-    </main>
+        <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mb-6">
+            <p className="text-xs uppercase tracking-[0.35em] text-primary/80">All Services</p>
+            <h3 className="mt-2 text-2xl font-semibold text-[#E7E4D2] sm:text-3xl">Everything we offer</h3>
+          </div>
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {allServices.map((service) => (
+              <article key={service.title} className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/[0.03] shadow-glow">
+                <img src={service.image} alt={service.title} className="h-52 w-full object-cover" />
+                <div className="p-6">
+                  <p className="text-xs uppercase tracking-[0.35em] text-accent/80">{service.subtitle}</p>
+                  <h4 className="mt-2 text-2xl font-semibold text-[#F2EEDC]">{service.title}</h4>
+                  <p className="mt-3 text-sm leading-7 text-white/72">{service.description}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      </main>
+      <FooterDemo />
+    </>
   );
 };
 
@@ -172,8 +176,12 @@ function ParallaxBlock({ imgUrl, subheading, heading, title, body, chips }: Para
               </span>
             ))}
           </div>
-          <button className="inline-flex w-full items-center gap-2 rounded bg-neutral-900 px-9 py-4 text-xl text-white transition-colors hover:bg-neutral-700 md:w-fit">
-            Learn more <ArrowRight className="inline h-5 w-5" />
+          <button
+            className="inline-flex w-full items-center gap-2 rounded-md bg-gradient-to-r from-primary/70 to-purple-600/60 px-6 py-3 text-xl text-white transform-gpu transition duration-200 ease-out hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary/60 md:w-fit"
+            aria-label="Learn more"
+          >
+            <span className="inline">Learn more</span>
+            <ArrowRight className="inline h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
           </button>
         </div>
       </div>

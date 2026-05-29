@@ -1,4 +1,4 @@
-import { Github, Instagram, Linkedin, Mail } from 'lucide-react';
+import { Instagram, Linkedin, Mail } from 'lucide-react';
 import { Footer } from './modem-animated-footer';
 
 export default function FooterDemo() {
@@ -14,11 +14,6 @@ export default function FooterDemo() {
       label: 'LinkedIn'
     },
     {
-      icon: <Github className="h-6 w-6" />,
-      href: 'https://github.com',
-      label: 'GitHub'
-    },
-    {
       icon: <Mail className="h-6 w-6" />,
       href: 'mailto:contact@webqraft.in',
       label: 'Email'
@@ -26,9 +21,9 @@ export default function FooterDemo() {
   ];
 
   const navLinks = [
+    { label: 'Home', href: '/' },
     { label: 'Services', href: '/services' },
     { label: 'Why Us', href: '/about' },
-    { label: 'Portfolio', href: '#portfolio' },
     { label: 'Contact', href: '/contact' }
   ];
 

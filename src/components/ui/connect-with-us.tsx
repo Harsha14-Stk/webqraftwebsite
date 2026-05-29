@@ -1,10 +1,10 @@
-import { Globe2, Instagram, Mail, MessageCircleMore } from 'lucide-react';
+import { Instagram, Mail, MessageCircleMore, Linkedin } from 'lucide-react';
 
 const socialLinks = [
   {
-    name: 'Website',
-    href: 'https://webqraft.in',
-    icon: Globe2,
+    name: 'LinkedIn',
+    href: 'https://www.linkedin.com',
+    icon: Linkedin,
     description: 'Explore our services and latest work'
   },
   {
@@ -15,7 +15,7 @@ const socialLinks = [
   },
   {
     name: 'WhatsApp',
-    href: 'https://wa.me/919141125410?text=Hello%20WebQraft%2C%20I%20would%20like%20to%20connect.',
+    href: 'https://wa.me/917892074124?text=Hello%20WebQraft%2C%20I%20would%20like%20to%20connect.',
     icon: MessageCircleMore,
     description: 'Start a quick conversation'
   },

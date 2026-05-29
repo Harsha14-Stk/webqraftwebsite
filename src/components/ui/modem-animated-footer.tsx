@@ -36,6 +36,9 @@ export const Footer = ({
   brandWatermark,
   className
 }: FooterProps) => {
+  const linkedIn = socialLinks.find(
+    (s) => (s.label && s.label.toLowerCase().includes('linkedin')) || (s.href && s.href.includes('linkedin'))
+  );
   return (
     <section className={cn('relative mt-0 w-full overflow-hidden', className)}>
       <footer className="relative mt-12 border-t bg-background">
@@ -112,10 +115,20 @@ export const Footer = ({
           </div>
         </div>
 
-        <div className="absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center rounded-3xl border-2 border-border bg-background/60 p-2 backdrop-blur-sm duration-400 hover:border-foreground drop-shadow-[0_0px_20px_rgba(0,0,0,0.5)] dark:drop-shadow-[0_0px_20px_rgba(255,255,255,0.3)] md:bottom-14">
-          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-to-br from-foreground to-foreground/80 shadow-lg sm:h-12 sm:w-12 md:h-16 md:w-16">
-            {brandIcon || (
-              <NotepadTextDashed className="h-6 w-6 text-background drop-shadow-lg sm:h-8 sm:w-8 md:h-10 md:w-10" />
+        <div className="absolute bottom-16 left-1/2 z-10 flex -translate-x-1/2 items-center justify-center rounded-3xl border-2 border-border bg-background/30 p-2 backdrop-blur-sm duration-400 hover:border-foreground drop-shadow-[0_0px_20px_rgba(0,0,0,0.5)] dark:drop-shadow-[0_0px_20px_rgba(255,255,255,0.3)] md:bottom-14">
+          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-to-br from-foreground/40 to-foreground/20 shadow-lg ring-1 ring-white/10 sm:h-12 sm:w-12 md:h-16 md:w-16">
+            {linkedIn ? (
+              <a href={linkedIn.href} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(linkedIn.href)}&size=240x240`}
+                  alt="LinkedIn QR"
+                  className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 rounded-sm object-contain bg-white/5 p-0.5"
+                />
+              </a>
+            ) : (
+              brandIcon || (
+                <NotepadTextDashed className="h-6 w-6 text-background drop-shadow-lg sm:h-8 sm:w-8 md:h-10 md:w-10" />
+              )
             )}
           </div>
         </div>

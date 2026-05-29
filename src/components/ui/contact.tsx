@@ -10,7 +10,7 @@ interface ContactSectionProps {
   mainMessage?: string;
   contactEmail?: string;
   socialLinks?: Array<{ id: string; name: string; iconSrc: string; href: string }>;
-  onSubmit?: (data: any) => void;
+  onSubmit?: (data: any) => void | Promise<void>;
 }
 
 const defaultSocialLinks = [
@@ -45,13 +45,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit?.(formData);
+    await onSubmit?.(formData);
   };
 
   const projectTypeOptions = [
-    'Website',
+    'LinkedIn',
     'Mobile App',
     'Web App',
     'E-Commerce',
